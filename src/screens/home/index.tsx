@@ -1,9 +1,9 @@
 import { ColorSwatch, Group } from '@mantine/core';
-import { Button } from '../../components/ui/button';
+import { Button } from '@/components/ui/button';
 import { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
 import Draggable from 'react-draggable';
-import {SWATCHES} from '../../constants';
+import {SWATCHES} from '@/constants';
 // import {LazyBrush} from 'lazy-brush';
 
 interface GeneratedResult {
