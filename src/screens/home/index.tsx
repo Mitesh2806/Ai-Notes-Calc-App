@@ -152,8 +152,7 @@ export default function Home() {
                 data: {
                     image: canvas.toDataURL('image/png'),
                     dict_of_vars: dictOfVars,
-                },
-                withCredentials: true,
+                }
             });
 
             const resp = await response.data;
