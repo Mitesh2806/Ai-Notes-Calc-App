@@ -151,7 +151,7 @@ export default function Home() {
                 url: `${import.meta.env.VITE_API_URL}/calculate`,
                 data: {
                     image: canvas.toDataURL('image/png'),
-                    dict_of_vars: dictOfVars,
+                    dict_of_vars: dictOfVars
                 }
             });
 
@@ -159,7 +159,7 @@ export default function Home() {
             console.log('Response', resp);
             resp.data.forEach((data: Response) => {
                 if (data.assign === true) {
-                    
+                    // dict_of_vars[resp.result] = resp.answer;
                     setDictOfVars({
                         ...dictOfVars,
                         [data.expr]: data.result
@@ -236,8 +236,7 @@ export default function Home() {
                 <Draggable
                     key={index}
                     defaultPosition={latexPosition}
-                    onStop={(_, data) => setLatexPosition({ x: data.x, y: data.y })}
-
+                    onStop={(e, data) => setLatexPosition({ x: data.x, y: data.y })}
                 >
                     <div className="absolute p-2 text-white rounded shadow-md">
                         <div className="latex-content">{latex}</div>
