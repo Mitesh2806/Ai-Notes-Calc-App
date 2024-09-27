@@ -152,14 +152,15 @@ export default function Home() {
                 data: {
                     image: canvas.toDataURL('image/png'),
                     dict_of_vars: dictOfVars,
-                }
+                },
+                withCredentials: true,
             });
 
             const resp = await response.data;
             console.log('Response', resp);
             resp.data.forEach((data: Response) => {
                 if (data.assign === true) {
-                    // dict_of_vars[resp.result] = resp.answer;
+                    
                     setDictOfVars({
                         ...dictOfVars,
                         [data.expr]: data.result
