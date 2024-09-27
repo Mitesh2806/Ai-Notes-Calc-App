@@ -112,35 +112,59 @@ export default function Home() {
         }
     };
 
-    const startDrawing = (e: React.MouseEvent<HTMLCanvasElement>) => {
+    const startDrawing = (e: React.MouseEvent<HTMLCanvasElement> | React.TouchEvent<HTMLCanvasElement>) => {
         const canvas = canvasRef.current;
-        if (canvas) {
+        const ctx = canvas?.getContext('2d');
+        if (canvas && ctx) {
+            const rect = canvas.getBoundingClientRect();
+            let x, y;
+            
+            if ('touches' in e) {
+                // For touch events
+                x = e.touches[0].clientX - rect.left;
+                y = e.touches[0].clientY - rect.top;
+            } else {
+                // For mouse events
+                x = e.nativeEvent.offsetX;
+                y = e.nativeEvent.offsetY;
+            }
+    
             canvas.style.background = 'black';
-            const ctx = canvas.getContext('2d');
-            if (ctx) {
-                ctx.beginPath();
-                ctx.moveTo(e.nativeEvent.offsetX, e.nativeEvent.offsetY);
-                setIsDrawing(true);
-            }
+            ctx.beginPath();
+            ctx.moveTo(x, y);
+            setIsDrawing(true);
         }
     };
-    const draw = (e: React.MouseEvent<HTMLCanvasElement>) => {
-        if (!isDrawing) {
-            return;
-        }
+    
+    const draw = (e: React.MouseEvent<HTMLCanvasElement> | React.TouchEvent<HTMLCanvasElement>) => {
+        if (!isDrawing) return;
+    
         const canvas = canvasRef.current;
-        if (canvas) {
-            const ctx = canvas.getContext('2d');
-            if (ctx) {
-                ctx.strokeStyle = color;
-                ctx.lineTo(e.nativeEvent.offsetX, e.nativeEvent.offsetY);
-                ctx.stroke();
+        const ctx = canvas?.getContext('2d');
+        if (canvas && ctx) {
+            const rect = canvas.getBoundingClientRect();
+            let x, y;
+    
+            if ('touches' in e) {
+                // For touch events
+                x = e.touches[0].clientX - rect.left;
+                y = e.touches[0].clientY - rect.top;
+            } else {
+                // For mouse events
+                x = e.nativeEvent.offsetX;
+                y = e.nativeEvent.offsetY;
             }
+    
+            ctx.strokeStyle = color;
+            ctx.lineTo(x, y);
+            ctx.stroke();
         }
     };
+    
     const stopDrawing = () => {
         setIsDrawing(false);
-    };  
+    };
+    
 
     const runRoute = async () => {
         const canvas = canvasRef.current;
@@ -230,6 +254,9 @@ export default function Home() {
                 onMouseMove={draw}
                 onMouseUp={stopDrawing}
                 onMouseOut={stopDrawing}
+                onTouchStart={startDrawing}    
+                onTouchMove={draw}             
+                onTouchEnd={stopDrawing}       
             />
 
             {latexExpression && latexExpression.map((latex, index) => (
