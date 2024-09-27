@@ -146,11 +146,11 @@ export default function Home() {
             let x, y;
     
             if ('touches' in e) {
-                // For touch events
+                
                 x = e.touches[0].clientX - rect.left;
                 y = e.touches[0].clientY - rect.top;
             } else {
-                // For mouse events
+                
                 x = e.nativeEvent.offsetX;
                 y = e.nativeEvent.offsetY;
             }
@@ -263,7 +263,7 @@ export default function Home() {
                 <Draggable
                     key={index}
                     defaultPosition={latexPosition}
-                    onStop={(e, data) => setLatexPosition({ x: data.x, y: data.y })}
+                    onStop={(_e, data) => setLatexPosition({ x: data.x, y: data.y })}
                 >
                     <div className="absolute p-2 text-white rounded shadow-md">
                         <div className="latex-content">{latex}</div>
